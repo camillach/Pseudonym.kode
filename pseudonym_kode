@@ -1,0 +1,120 @@
+#include <Adafruit_NeoPixel.h>
+ 
+#define PIN      6
+#define antLed 10
+ 
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(antLed, PIN, NEO_GRB + NEO_KHZ800);
+
+int antTimer = 0;
+int antTrykkPluss = 0;
+int lysendeLys = 0;
+int morkeLys = 0;
+
+int startKnapp = 0;
+int plussKnapp = 1;
+int minusKnapp = 2;
+int tilt = 3;
+ 
+void setup() {
+  pinMode(PIN, OUTPUT);
+  pinMode(antLed, OUTPUT);
+  pinMode(startKnapp, INPUT);
+  pinMode(plussKnapp, INPUT);
+  pinMode(minusKnapp, INPUT);
+  pinMode(tilt, INPUT);
+  
+  strip.begin();
+
+  // standar ved oppstart
+  digitalWrite(startKnapp, LOW);
+  digitalWrite(plussKnapp, LOW);
+  digitalWrite(minusKnapp, LOW);
+  digitalWrite(tilt, HIGH);
+}
+ 
+void loop() {
+
+  lyttTilKnapper();
+
+    
+  }
+  
+
+  // folger med paa om knapp er trykket
+  void lyttTilKnapper() {
+
+    if (digitalRead(plussKnapp) == HIGH) {
+      pluss();
+    }
+
+    if (digitalRead(minusKnapp) == HIGH) {
+      minus();
+    }
+
+    if (digitalRead(startKnapp) == HIGH) {
+      start();
+    }
+
+   if (digitalRead(tilt) == LOW) {
+      pauseStart();
+    }
+    
+  }
+
+
+  // metode som sjekker hvor mange ganger trykket
+  void pluss() {
+
+    antTrykkPluss++;
+
+    //lysendeLys = antTrykkPluss;
+
+    morkeLys = antLed - antTrykkPluss;
+
+    if (antTrykkPluss < 9) {
+      strip.setPixelColor(antTrykkPluss, strip.Color(255,100,0));
+    }
+       
+    
+  }
+
+  
+  void minus() {
+    return;
+    
+  }
+
+  
+  // slukk lysene og setter igang timeren
+  void start() {
+    return;
+  }
+
+  // sjekker tiden og gir tilsatt lyd når lyden er 'true'
+  void giLyd() {
+    return;
+  }
+
+  // holder styr paa tiden
+  void beregnTid() {
+    return;
+  }
+
+
+  // leser fra TILT - naar sjiraffen er lagt ned/sidelengs
+  void pauseStart() {
+    //while (tilit)
+
+    pauseSlutt();
+    
+  }
+
+  // feedback i form av at alle lysene blinker for aa fortelle at den er i gang igjen
+  void pauseSlutt() {
+    return;
+  }
+
+  // naad antall timer onsket
+  void maalNaad() {
+    return;
+  }
