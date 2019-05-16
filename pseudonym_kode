@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
  
-#define PIN      6
+#define PIN 6
 #define antLed 10
  
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(antLed, PIN, NEO_GRB + NEO_KHZ800);
@@ -10,10 +10,10 @@ int antTimer = 0;
 int lysendeLys = 0;
 int morkeLys = 0;
 
-int startKnapp = 0;
-int plussKnapp = 1;
-int minusKnapp = 2;
-int tilt = 3;
+int startKnapp = 3;
+int plussKnapp = 4;
+int minusKnapp = 5;
+int tilt = 6;
 
 unsigned long arbeidsTimer = millis(); // totale tiden regner ut naar ferdig
 unsigned long enTime = millis(); // regner ut naar en time har gaatt
@@ -85,13 +85,11 @@ void loop() {
   
   void minus() {
    morkeLys++;
-
    onsketTid -= 3600;
-
    lysendeLys = antLed - morkeLys;
 
    if (morkeLys < 9) {
-    strip.setPixelColor(morkeLys, strip.Color(255,100,0));
+    strip.setPixelColor(lysendeLys, strip.Color(255,100,0));
     strip.show();
     }
     
@@ -131,7 +129,13 @@ void loop() {
 
   // leser fra TILT - naar sjiraffen er lagt ned/sidelengs
   void pauseStart() {
-    //while (tilit)
+   boolean leser = (digitalRead(tilt) == LOW);
+   
+    while (leser) {
+     strip.setPixelColor(antLed, strip.Color(0,0,127))
+     strip.show();
+     delay(300);
+    }
 
     pauseSlutt();
     
@@ -144,5 +148,8 @@ void loop() {
 
   // naad antall timer onsket
   void maalNaad() {
-    return;
+  
+   if (arbeidsTimer == onsketTid) {
+    strip.setPixelColor(antLed, strip.Color(255,20,147));
+   }
   }
