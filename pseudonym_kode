@@ -6,7 +6,7 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(antLed, PIN, NEO_GRB + NEO_KHZ800);
 
 int antTimer = 0;
-int antTrykkPluss = 0;
+//int antTrykkPluss = 0;
 int lysendeLys = 0;
 int morkeLys = 0;
 
@@ -14,7 +14,12 @@ int startKnapp = 0;
 int plussKnapp = 1;
 int minusKnapp = 2;
 int tilt = 3;
- 
+
+unsigned long arbeidsTimer = millis(); // totale tiden regner ut naar ferdig
+unsigned long enTime = millis(); // regner ut naar en time har gaatt
+unsigned long maxTid = 36000; // 10 timer
+unsigned long onsketTid = 0; // valgt tid med knappene
+
 void setup() {
   pinMode(PIN, OUTPUT);
   pinMode(antLed, OUTPUT);
@@ -22,8 +27,6 @@ void setup() {
   pinMode(plussKnapp, INPUT);
   pinMode(minusKnapp, INPUT);
   pinMode(tilt, INPUT);
-  
-  strip.begin();
 
   // standar ved oppstart
   digitalWrite(startKnapp, LOW);
@@ -65,14 +68,15 @@ void loop() {
   // metode som sjekker hvor mange ganger trykket
   void pluss() {
 
-    antTrykkPluss++;
+    lysendeLys++;
 
-    //lysendeLys = antTrykkPluss;
+    onsketTid += 3600;
 
-    morkeLys = antLed - antTrykkPluss;
+    morkeLys = antLed - lysendeLys;
 
-    if (antTrykkPluss < 9) {
-      strip.setPixelColor(antTrykkPluss, strip.Color(255,100,0));
+    if (lysendeLys < 9) {
+      strip.setPixelColor(lysendeLys, strip.Color(255,100,0));
+      strip.show();
     }
        
     
@@ -80,14 +84,32 @@ void loop() {
 
   
   void minus() {
-    return;
+   morkeLys++;
+
+   onsketTid -= 3600;
+
+   lysendeLys = antLed - morkeLys;
+
+   if (morkeLys < 9) {
+    strip.setPixelColor(morkeLys, strip.Color(255,100,0));
+    strip.show();
+    }
     
   }
+
 
   
   // slukk lysene og setter igang timeren
   void start() {
-    return;
+    
+   // valgt antall lys blinker for aa vise at den begynner
+   strip.setPixelColor(lysendeLys, strip.Color(255,100,0));
+   strip.show();
+   delay(200);
+   strip.show();
+
+   beregnTid();
+    
   }
 
   // sjekker tiden og gir tilsatt lyd når lyden er 'true'
@@ -95,9 +117,15 @@ void loop() {
     return;
   }
 
-  // holder styr paa tiden
+  // holder styr paa tiden HER TING SKJER
   void beregnTid() {
-    return;
+
+    if (
+    
+    
+    if (digitalRead(tilt) == LOW) {
+      pauseStart();
+    }
   }
 
 
